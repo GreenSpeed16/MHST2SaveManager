@@ -84,7 +84,7 @@ namespace MHST2SaveManager
             string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
             Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
             FileName = r.Replace(FileName, "");
-            __Model.CreateSave(FileName + ".txt", slot);
+            __Model.CreateSave(FileName + ".sav", slot);
         }
 
         public void RenameSave(string oldName, string newName)

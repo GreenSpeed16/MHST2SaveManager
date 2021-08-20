@@ -42,19 +42,19 @@ namespace MHST2SaveManager
                 if (dialogResult == DialogResult.Yes)
                 {
                     //Backup Main State
-                    File.Delete(".\\MainSave\\main_slot_1.txt");
-                    File.Copy(SavePath + "\\mhr_slot_1.txt", ".\\MainSave\\main_slot_1.txt");
-                    File.Delete(".\\MainSave\\main_slot_2.txt");
-                    File.Copy(SavePath + "\\mhr_slot_2.txt", ".\\MainSave\\main_slot_2.txt");
-                    File.Delete(".\\MainSave\\main_slot_3.txt");
-                    File.Copy(SavePath + "\\mhr_slot_3.txt", ".\\MainSave\\main_slot_3.txt");
+                    File.Delete(".\\MainSave\\main_slot_1.sav");
+                    File.Copy(SavePath + "\\mhr_slot_1.sav", ".\\MainSave\\main_slot_1.sav");
+                    File.Delete(".\\MainSave\\main_slot_2.sav");
+                    File.Copy(SavePath + "\\mhr_slot_2.sav", ".\\MainSave\\main_slot_2.sav");
+                    File.Delete(".\\MainSave\\main_slot_3.sav");
+                    File.Copy(SavePath + "\\mhr_slot_3.sav", ".\\MainSave\\main_slot_3.sav");
                 }
                 
             }
 
             SavePaths[slot] = FileName;
-            File.Delete(SavePath + "\\mhr_slot_" + slot + ".txt");
-            File.Copy(".\\Saves\\" + FileName + ".txt", SavePath + "\\mhr_slot_" + slot + ".txt");
+            File.Delete(SavePath + "\\mhr_slot_" + slot + ".sav");
+            File.Copy(".\\Saves\\" + FileName + ".sav", SavePath + "\\mhr_slot_" + slot + ".sav");
             MainLoaded = false;
         }
 
@@ -74,10 +74,10 @@ namespace MHST2SaveManager
             //Check for existing save with name
             if (!SaveList.Contains(FilePath))
             {
-                File.Copy(SavePath + "\\mhr_slot_" + slot + ".txt", ".\\Saves\\" + FilePath);
-                SavePaths[slot] = FilePath.Replace(".txt", "");
+                File.Copy(SavePath + "\\mhr_slot_" + slot + ".sav", ".\\Saves\\" + FilePath);
+                SavePaths[slot] = FilePath.Replace(".sav", "");
                 MainLoaded = false;
-                SaveList.Add(FilePath.Replace(".txt", ""));
+                SaveList.Add(FilePath.Replace(".sav", ""));
             }
             else
             {
@@ -86,8 +86,8 @@ namespace MHST2SaveManager
                 if (result == DialogResult.Yes)
                 {
                     File.Delete(".\\Saves\\" + FilePath);
-                    File.Copy(SavePath + "\\mhr_slot_" + slot + ".txt", ".\\Saves\\" + FilePath);
-                    SavePaths[slot] = FilePath.Replace(".txt", "");
+                    File.Copy(SavePath + "\\mhr_slot_" + slot + ".sav", ".\\Saves\\" + FilePath);
+                    SavePaths[slot] = FilePath.Replace(".sav", "");
                     MainLoaded = false;
                 }
             }
@@ -109,14 +109,14 @@ namespace MHST2SaveManager
         {
             if (!MainLoaded)
             {
-                File.Delete(SavePath + "\\mhr_slot_1.txt");
-                File.Copy(".\\MainSave\\main_slot_1.txt", SavePath + "\\mhr_slot_1.txt");
+                File.Delete(SavePath + "\\mhr_slot_1.sav");
+                File.Copy(".\\MainSave\\main_slot_1.sav", SavePath + "\\mhr_slot_1.sav");
 
-                File.Delete(SavePath + "\\mhr_slot_2.txt");
-                File.Copy(".\\MainSave\\main_slot_2.txt", SavePath + "\\mhr_slot_2.txt");
+                File.Delete(SavePath + "\\mhr_slot_2.sav");
+                File.Copy(".\\MainSave\\main_slot_2.sav", SavePath + "\\mhr_slot_2.sav");
 
-                File.Delete(SavePath + "\\mhr_slot_3.txt");
-                File.Copy(".\\MainSave\\main_slot_3.txt", SavePath + "\\mhr_slot_3.txt");
+                File.Delete(SavePath + "\\mhr_slot_3.sav");
+                File.Copy(".\\MainSave\\main_slot_3.sav", SavePath + "\\mhr_slot_3.sav");
                 MainLoaded = true;
                 SavePaths[1] = "Main";
                 SavePaths[2] = "Main";
@@ -167,14 +167,14 @@ namespace MHST2SaveManager
                 }
             }
 
-            File.Delete(".\\MainSave\\main_slot_1.txt");
-            File.Copy(SavePath + "\\mhr_slot_1.txt", ".\\MainSave\\main_slot_1.txt");
+            File.Delete(".\\MainSave\\main_slot_1.sav");
+            File.Copy(SavePath + "\\mhr_slot_1.sav", ".\\MainSave\\main_slot_1.sav");
 
-            File.Delete(".\\MainSave\\main_slot_2.txt");
-            File.Copy(SavePath + "\\mhr_slot_2.txt", ".\\MainSave\\main_slot_2.txt");
+            File.Delete(".\\MainSave\\main_slot_2.sav");
+            File.Copy(SavePath + "\\mhr_slot_2.sav", ".\\MainSave\\main_slot_2.sav");
 
-            File.Delete(".\\MainSave\\main_slot_3.txt");
-            File.Copy(SavePath + "\\mhr_slot_3.txt", ".\\MainSave\\main_slot_3.txt");
+            File.Delete(".\\MainSave\\main_slot_3.sav");
+            File.Copy(SavePath + "\\mhr_slot_3.sav", ".\\MainSave\\main_slot_3.sav");
         }
 
         public string GetSave(int slot)
