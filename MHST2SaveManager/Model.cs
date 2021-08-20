@@ -17,8 +17,8 @@ namespace MHST2SaveManager
     {
         public static BinaryFormatter binaryFormatter { get; private set; }
         public static List<string> SaveList { get; private set; }
-        public bool MainLoaded { get; private set; }
-        public static SortedDictionary<int, string> SavePaths;
+        public static bool MainLoaded { get; private set; }
+        public static Dictionary<int, string> SavePaths;
         public string SavePath { get; private set; }
         public static ProgramState State;
 
@@ -37,7 +37,7 @@ namespace MHST2SaveManager
             if (MainLoaded)
             {
                 DialogResult dialogResult =
-                MessageBox.Show("You are about to switch off of your main save file. Would you like to save it?", "Confirm Save Switch", MessageBoxButtons.YesNo);
+                MessageBox.Show("You are about to switch off of one of your main saves. Would you like to back it up?", "Confirm Save Switch", MessageBoxButtons.YesNo);
 
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -54,7 +54,7 @@ namespace MHST2SaveManager
 
             SavePaths[slot] = FileName;
             File.Delete(SavePath + "\\mhr_slot_" + slot + ".txt");
-            File.Copy(".\\Saves\\" + FileName, SavePath + "\\mhr_slot_" + slot + ".txt");
+            File.Copy(".\\Saves\\" + FileName + ".txt", SavePath + "\\mhr_slot_" + slot + ".txt");
             MainLoaded = false;
         }
 
@@ -118,9 +118,9 @@ namespace MHST2SaveManager
                 File.Delete(SavePath + "\\mhr_slot_3.txt");
                 File.Copy(".\\MainSave\\main_slot_3.txt", SavePath + "\\mhr_slot_3.txt");
                 MainLoaded = true;
-                SavePaths[0] = "Main";
                 SavePaths[1] = "Main";
                 SavePaths[2] = "Main";
+                SavePaths[3] = "Main";
             }
         }
 

@@ -32,13 +32,10 @@ namespace MHST2SaveManager
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.SaveCurrentSave = new System.Windows.Forms.Button();
             this.DeleteButton = new System.Windows.Forms.Button();
-            this.CurrentSaveLabel = new System.Windows.Forms.Label();
             this.SetMainButton = new System.Windows.Forms.Button();
             this.MainSaveButton = new System.Windows.Forms.Button();
-            this.SetWorldPath = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.SaveBox = new System.Windows.Forms.ListBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.downButton = new System.Windows.Forms.Button();
@@ -74,6 +71,7 @@ namespace MHST2SaveManager
             // 
             // DeleteButton
             // 
+            this.DeleteButton.Enabled = false;
             this.DeleteButton.Location = new System.Drawing.Point(129, 190);
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(110, 39);
@@ -81,15 +79,6 @@ namespace MHST2SaveManager
             this.DeleteButton.Text = "Delete Selected Save";
             this.DeleteButton.UseVisualStyleBackColor = true;
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
-            // 
-            // CurrentSaveLabel
-            // 
-            this.CurrentSaveLabel.Location = new System.Drawing.Point(248, 150);
-            this.CurrentSaveLabel.Name = "CurrentSaveLabel";
-            this.CurrentSaveLabel.Size = new System.Drawing.Size(112, 13);
-            this.CurrentSaveLabel.TabIndex = 14;
-            this.CurrentSaveLabel.Text = "SaveNameHere";
-            this.CurrentSaveLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SetMainButton
             // 
@@ -107,22 +96,13 @@ namespace MHST2SaveManager
             this.MainSaveButton.Name = "MainSaveButton";
             this.MainSaveButton.Size = new System.Drawing.Size(103, 39);
             this.MainSaveButton.TabIndex = 15;
-            this.MainSaveButton.Text = "Load Main Save";
+            this.MainSaveButton.Text = "Load Main Saves";
             this.MainSaveButton.UseVisualStyleBackColor = true;
             this.MainSaveButton.Click += new System.EventHandler(this.MainSaveButton_Click);
             // 
-            // SetWorldPath
-            // 
-            this.SetWorldPath.Location = new System.Drawing.Point(251, 56);
-            this.SetWorldPath.Name = "SetWorldPath";
-            this.SetWorldPath.Size = new System.Drawing.Size(109, 23);
-            this.SetWorldPath.TabIndex = 20;
-            this.SetWorldPath.Text = "Set Save Folder";
-            this.SetWorldPath.UseVisualStyleBackColor = true;
-            this.SetWorldPath.Click += new System.EventHandler(this.SetWorldPath_Click);
-            // 
             // LoadButton
             // 
+            this.LoadButton.Enabled = false;
             this.LoadButton.Location = new System.Drawing.Point(129, 100);
             this.LoadButton.Name = "LoadButton";
             this.LoadButton.Size = new System.Drawing.Size(110, 39);
@@ -140,20 +120,11 @@ namespace MHST2SaveManager
             this.SaveBox.TabIndex = 11;
             this.SaveBox.SelectedIndexChanged += new System.EventHandler(this.SaveBox_SelectedIndexChanged);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(248, 120);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(118, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "Currently Loaded Save:";
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.SaveCurrentSave);
             this.groupBox1.Controls.Add(this.SetMainButton);
-            this.groupBox1.Location = new System.Drawing.Point(475, 299);
+            this.groupBox1.Location = new System.Drawing.Point(137, 56);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(161, 140);
             this.groupBox1.TabIndex = 21;
@@ -177,6 +148,7 @@ namespace MHST2SaveManager
             // 
             // downButton
             // 
+            this.downButton.Enabled = false;
             this.downButton.Location = new System.Drawing.Point(129, 64);
             this.downButton.Name = "downButton";
             this.downButton.Size = new System.Drawing.Size(110, 24);
@@ -187,6 +159,7 @@ namespace MHST2SaveManager
             // 
             // upButton
             // 
+            this.upButton.Enabled = false;
             this.upButton.Location = new System.Drawing.Point(129, 28);
             this.upButton.Name = "upButton";
             this.upButton.Size = new System.Drawing.Size(110, 24);
@@ -197,6 +170,7 @@ namespace MHST2SaveManager
             // 
             // RenameButton
             // 
+            this.RenameButton.Enabled = false;
             this.RenameButton.Location = new System.Drawing.Point(129, 145);
             this.RenameButton.Name = "RenameButton";
             this.RenameButton.Size = new System.Drawing.Size(110, 39);
@@ -304,11 +278,8 @@ namespace MHST2SaveManager
             this.Controls.Add(this.topBar);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.SetWorldPath);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.CurrentSaveLabel);
             this.Controls.Add(this.MainSaveButton);
-            this.Controls.Add(this.label2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
             this.Text = "SaveTheWorld";
@@ -319,7 +290,6 @@ namespace MHST2SaveManager
             this.panel1.PerformLayout();
             this.topBar.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -327,13 +297,10 @@ namespace MHST2SaveManager
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button SaveCurrentSave;
         private System.Windows.Forms.Button DeleteButton;
-        private System.Windows.Forms.Label CurrentSaveLabel;
         private System.Windows.Forms.Button SetMainButton;
         private System.Windows.Forms.Button MainSaveButton;
-        private System.Windows.Forms.Button SetWorldPath;
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.ListBox SaveBox;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;

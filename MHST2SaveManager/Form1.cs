@@ -27,12 +27,57 @@ namespace MHST2SaveManager
         {
             InitializeComponent();
             selectedSlot = 0;
+            if (Model.SavePaths.ContainsKey(1) && Model.SavePaths.ContainsKey(2) && Model.SavePaths.ContainsKey(3))
+            {
+                InitSlots();
+            }            
         }
 
         public void SetController(Controller c)
         {
             Cont = c;
-            CurrentSaveLabel.Text = Cont.GetSave(selectedSlot);
+        }
+
+        public void SetSavePath()
+        {
+            if (Cont.SetSavePath())
+            {
+                Cont.SetMain();
+                Cont.LoadMain();
+                EnableButtons(true);
+                UpdateSlots("Main");
+                MainLoaded(true);
+            }
+        }
+
+        private void InitSlots()
+        {
+            slot1Button.Text = "Slot 1: " + Model.SavePaths[1];
+            slot2Button.Text = "Slot 2: " + Model.SavePaths[2];
+            slot3Button.Text = "Slot 3: " + Model.SavePaths[3];
+        }
+
+        private void UpdateSlots(string SaveName)
+        {
+            if(SaveName == "Main" || Model.MainLoaded)
+            {
+                slot1Button.Text = "Slot 1: " + SaveName;
+                slot2Button.Text = "Slot 2: " + SaveName;
+                slot3Button.Text = "Slot 3: " + SaveName;
+            }
+
+            switch (selectedSlot)
+            {
+                case 1:
+                    slot1Button.Text = "Slot 1: " + SaveName;
+                    break;
+                case 2:
+                    slot2Button.Text = "Slot 2: " + SaveName;
+                    break;
+                case 3:
+                    slot3Button.Text = "Slot 3: " + SaveName;
+                    break;
+            }
         }
 
         public void ListSaves()
@@ -53,12 +98,7 @@ namespace MHST2SaveManager
         {
             SetMainButton.Enabled = WorldPathSet;
             SaveCurrentSave.Enabled = WorldPathSet;
-            LoadButton.Enabled = WorldPathSet;
-            DeleteButton.Enabled = WorldPathSet;
             MainSaveButton.Enabled = WorldPathSet;
-            upButton.Enabled = WorldPathSet;
-            downButton.Enabled = WorldPathSet;
-            RenameButton.Enabled = WorldPathSet;
         }
 
         private void SetWorldPath_Click(object sender, EventArgs e)
@@ -71,8 +111,8 @@ namespace MHST2SaveManager
             {
                 Cont.SetMain();
                 Cont.LoadMain();
-                CurrentSaveLabel.Text = "Main";
                 EnableButtons(true);
+                UpdateSlots("Main");
                 MainLoaded(true);
             }
             
@@ -81,7 +121,7 @@ namespace MHST2SaveManager
         private void MainSaveButton_Click(object sender, EventArgs e)
         {
             Cont.LoadMain();
-            CurrentSaveLabel.Text = "Main";
+            UpdateSlots("Main");
             MainLoaded(true); //User cannot load main save if it is already loaded
         }
 
@@ -92,24 +132,18 @@ namespace MHST2SaveManager
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            string SaveName = SaveBox.SelectedItem.ToString();
-            if (SaveName != null)
-            {
-                //Cont.LoadSave(SaveName);
-                CurrentSaveLabel.Text = SaveName;
-            }
-            else
-            {
-                MessageBox.Show("No Save Selected");
-            }
+            string fileName = SaveBox.SelectedItem.ToString();
+            Cont.LoadSave(fileName, selectedSlot);
+            UpdateSlots(fileName);
 
-            MainLoaded(false); //Re-enable main save loading
+            //Re-enable main save loading
+            MainLoaded(false);
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
             string SaveName = SaveBox.SelectedItem.ToString();
-            if (SaveName != null && SaveName != CurrentSaveLabel.Text)
+            if (SaveName != null && SaveName != Model.SavePaths[selectedSlot])
             {
                 Cont.DeleteSave(SaveName);
                 Cont.ListSaves();
@@ -137,7 +171,7 @@ namespace MHST2SaveManager
                 if (SaveName != "")
                 {
                     Cont.CreateSave(SaveName, selectedSlot);
-                    CurrentSaveLabel.Text = Model.SavePaths[selectedSlot];
+                    UpdateSlots(SaveName);
                     MainLoaded(false);
                     Cont.ListSaves();
                 }
@@ -146,8 +180,16 @@ namespace MHST2SaveManager
             {
                 MessageBox.Show("Select a slot to back up first.", "No Slot Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            
+        }
 
+        private void EnableSaveButtons()
+        {
+            if (selectedSlot != 0)
+            {
+                LoadButton.Enabled = (SaveBox.Items.Count > 0);
+                RenameButton.Enabled = (SaveBox.Items.Count > 0);
+                DeleteButton.Enabled = (SaveBox.Items.Count > 0);
+            }
         }
 
         private void RenameButton_Click(object sender, EventArgs e)
@@ -165,6 +207,8 @@ namespace MHST2SaveManager
         {
             upButton.Enabled = (SaveBox.SelectedIndex > 0);
             downButton.Enabled = (SaveBox.SelectedIndex < SaveBox.Items.Count - 1);
+
+            EnableSaveButtons();
         }
 
         private void upButton_Click(object sender, EventArgs e)
@@ -226,8 +270,9 @@ namespace MHST2SaveManager
 
                 slot3Button.BackColor = Color.FromArgb(64, 64, 64);
                 slot3Button.ForeColor = Color.White;
-
             }
+
+            EnableSaveButtons();
         }
 
         private void slot2Button_Click(object sender, EventArgs e)
@@ -244,6 +289,8 @@ namespace MHST2SaveManager
                 slot3Button.BackColor = Color.FromArgb(64, 64, 64);
                 slot3Button.ForeColor = Color.White;
             }
+
+            EnableSaveButtons();
         }
 
         private void slot3Button_Click(object sender, EventArgs e)
@@ -260,6 +307,8 @@ namespace MHST2SaveManager
                 slot1Button.BackColor = Color.FromArgb(64, 64, 64);
                 slot1Button.ForeColor = Color.White;
             }
+
+            EnableSaveButtons();
         }
     }
 }
