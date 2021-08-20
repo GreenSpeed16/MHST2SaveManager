@@ -18,24 +18,30 @@ namespace MHST2SaveManager
             this.__View = View;
             this.__Model = Model;
 
-            __View.MainLoaded(__Model.MainLoaded);
-            if (__Model.WorldPath == null)
+            __View.MainLoaded(Model.MainLoaded);
+
+            if (__Model.SavePath == null)
             {
                 __View.EnableButtons(false);
             }
             else
             {
                 __View.EnableButtons(true);
-                if (__Model.CurrentSavePath == "Main")
+                if (Model.MainLoaded)
                 {
                     __View.MainLoaded(true);
                 }
             }
         }
 
-        public void SetWorldPath(string Path)
+        public bool SetSavePath()
         {
-            __Model.SetWorldFolder(Path);
+            if(__Model.SavePath == null)
+            {
+                return __Model.SetSaveFolder();
+            }
+            return false;
+            
         }
 
         public void Save()
@@ -43,9 +49,9 @@ namespace MHST2SaveManager
             __Model.Save();
         }
 
-        public void LoadSave(string FileName)
+        public void LoadSave(string FileName, int slot)
         {
-            __Model.SwitchSave(FileName);
+            __Model.SwitchSave(FileName, slot);
         }
 
         public void SetMain()
@@ -53,9 +59,9 @@ namespace MHST2SaveManager
             __Model.SetMain();
         }
 
-        public string GetSave()
+        public string GetSave(int slot)
         {
-            return __Model.GetSave();
+            return __Model.GetSave(slot);
         }
 
         public void LoadMain()
@@ -73,12 +79,12 @@ namespace MHST2SaveManager
             __View.ListSaves();
         }
 
-        public void CreateSave(string FileName)
+        public void CreateSave(string FileName, int slot)
         {
             string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
             Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
             FileName = r.Replace(FileName, "");
-            __Model.CreateSave(FileName);
+            __Model.CreateSave(FileName + ".sav", slot);
         }
 
         public void RenameSave(string oldName, string newName)

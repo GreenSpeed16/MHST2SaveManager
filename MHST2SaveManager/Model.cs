@@ -9,6 +9,7 @@ using System.Diagnostics;
 using Microsoft.VisualBasic;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using Microsoft.Win32;
 
 namespace MHST2SaveManager
 {
@@ -16,45 +17,51 @@ namespace MHST2SaveManager
     {
         public static BinaryFormatter binaryFormatter { get; private set; }
         public static List<string> SaveList { get; private set; }
-        public bool MainLoaded { get; private set; }
-        public string CurrentSavePath;
-        public string WorldPath { get; private set; }
+        public static bool MainLoaded { get; private set; }
+        public static Dictionary<int, string> SavePaths;
+        public string SavePath { get; private set; }
         public static ProgramState State;
 
         public Model()
         {
             binaryFormatter = new BinaryFormatter();
             State = ProgramState.State;
-            CurrentSavePath = State.CurrentSavePath;
-            WorldPath = State.WorldPath;
+            SavePaths = State.SavePaths;
+            SavePath = State.SavePath;
             MainLoaded = State.MainLoaded;
             SaveList = State.SaveList;
         }
 
-        public void SwitchSave(string FileName)
+        public void SwitchSave(string FileName, int slot)
         {
             if (MainLoaded)
             {
                 DialogResult dialogResult =
-                MessageBox.Show("You are about to switch off of your main save file. Would you like to save it?", "Confirm Save Switch", MessageBoxButtons.YesNo);
+                MessageBox.Show("You are about to switch off of one of your main saves. Would you like to back it up?", "Confirm Save Switch", MessageBoxButtons.YesNo);
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    File.Delete(".\\MainSave\\MainData");
-                    File.Copy(WorldPath + "\\SAVEDATA1000", ".\\MainSave\\MainData");
+                    //Backup Main State
+                    File.Delete(".\\MainSave\\main_slot_1.sav");
+                    File.Copy(SavePath + "\\mhr_slot_1.sav", ".\\MainSave\\main_slot_1.sav");
+                    File.Delete(".\\MainSave\\main_slot_2.sav");
+                    File.Copy(SavePath + "\\mhr_slot_2.sav", ".\\MainSave\\main_slot_2.sav");
+                    File.Delete(".\\MainSave\\main_slot_3.sav");
+                    File.Copy(SavePath + "\\mhr_slot_3.sav", ".\\MainSave\\main_slot_3.sav");
                 }
+                
             }
 
-            CurrentSavePath = FileName;
-            File.Delete(WorldPath + "\\SAVEDATA1000");
-            File.Copy(".\\Saves\\" + FileName, WorldPath + "\\SAVEDATA1000");
+            SavePaths[slot] = FileName;
+            File.Delete(SavePath + "\\mhr_slot_" + slot + ".sav");
+            File.Copy(".\\Saves\\" + FileName + ".sav", SavePath + "\\mhr_slot_" + slot + ".sav");
             MainLoaded = false;
         }
 
         public void Save()
         {
             //Pass data to CurrentState
-            State.Save(WorldPath, CurrentSavePath, MainLoaded);
+            State.Save(SavePath, SavePaths, MainLoaded);
             //Save to file
             using (Stream output = File.Create("program.state"))
             {
@@ -62,14 +69,15 @@ namespace MHST2SaveManager
             }
         }
 
-        public void CreateSave(string FilePath)
+        public void CreateSave(string FilePath, int slot)
         {
+            //Check for existing save with name
             if (!SaveList.Contains(FilePath))
             {
-                File.Copy(WorldPath + "\\SAVEDATA1000", ".\\Saves\\" + FilePath);
-                CurrentSavePath = FilePath.Replace(".\\Saves\\", "");
+                File.Copy(SavePath + "\\mhr_slot_" + slot + ".sav", ".\\Saves\\" + FilePath);
+                SavePaths[slot] = FilePath.Replace(".sav", "");
                 MainLoaded = false;
-                SaveList.Add(FilePath);
+                SaveList.Add(FilePath.Replace(".sav", ""));
             }
             else
             {
@@ -78,8 +86,8 @@ namespace MHST2SaveManager
                 if (result == DialogResult.Yes)
                 {
                     File.Delete(".\\Saves\\" + FilePath);
-                    File.Copy(WorldPath + "\\SAVEDATA1000", ".\\Saves\\" + FilePath);
-                    CurrentSavePath = FilePath.Replace(".\\Saves\\", "");
+                    File.Copy(SavePath + "\\mhr_slot_" + slot + ".sav", ".\\Saves\\" + FilePath);
+                    SavePaths[slot] = FilePath.Replace(".sav", "");
                     MainLoaded = false;
                 }
             }
@@ -101,20 +109,49 @@ namespace MHST2SaveManager
         {
             if (!MainLoaded)
             {
-                File.Delete(WorldPath + "\\SAVEDATA1000");
-                File.Copy(".\\MainSave\\MainData", WorldPath + "\\SAVEDATA1000");
+                File.Delete(SavePath + "\\mhr_slot_1.sav");
+                File.Copy(".\\MainSave\\main_slot_1.sav", SavePath + "\\mhr_slot_1.sav");
+
+                File.Delete(SavePath + "\\mhr_slot_2.sav");
+                File.Copy(".\\MainSave\\main_slot_2.sav", SavePath + "\\mhr_slot_2.sav");
+
+                File.Delete(SavePath + "\\mhr_slot_3.sav");
+                File.Copy(".\\MainSave\\main_slot_3.sav", SavePath + "\\mhr_slot_3.sav");
                 MainLoaded = true;
-                CurrentSavePath = "Main";
-            }
-            else
-            {
-                MessageBox.Show("Main Save Is Already Loaded", "Already Loaded");
+                SavePaths[1] = "Main";
+                SavePaths[2] = "Main";
+                SavePaths[3] = "Main";
             }
         }
 
-        public void SetWorldFolder(string Path)
+        public bool SetSaveFolder()
         {
-            WorldPath = Path;
+            object steamPath = Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam", "InstallPath", null);
+            string[] userdataFolder = Directory.GetDirectories(steamPath.ToString() + "\\userdata");
+            bool storiesFolderExists = false;
+            foreach (string folder in userdataFolder)
+            {
+                Console.WriteLine(folder);
+                Console.WriteLine(folder.Substring(folder.LastIndexOf("\\") + 1));
+                if (Regex.IsMatch(folder.Substring(folder.LastIndexOf("\\") + 1), "^[0-9]{9}"))
+                //Folder is the Id folder
+                {
+                    foreach (string subFolder in Directory.GetDirectories(folder))
+                    {
+                        if (subFolder.Substring(subFolder.LastIndexOf("\\") + 1) == "1277400")
+                        {
+                            SavePath = folder + "\\1277400\\remote";
+                            return true;
+                        }
+                    }
+                    if (!storiesFolderExists)
+                    {
+                        MessageBox.Show("Stories 2 Folder Not Found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    return false;
+                }
+            }
+            return false;
         }
 
         public void SetMain()
@@ -130,13 +167,26 @@ namespace MHST2SaveManager
                 }
             }
 
-            File.Delete(".\\MainSave\\MainData");
-            File.Copy(WorldPath + "\\SAVEDATA1000", ".\\MainSave\\MainData");
+            File.Delete(".\\MainSave\\main_slot_1.sav");
+            File.Copy(SavePath + "\\mhr_slot_1.sav", ".\\MainSave\\main_slot_1.sav");
+
+            File.Delete(".\\MainSave\\main_slot_2.sav");
+            File.Copy(SavePath + "\\mhr_slot_2.sav", ".\\MainSave\\main_slot_2.sav");
+
+            File.Delete(".\\MainSave\\main_slot_3.sav");
+            File.Copy(SavePath + "\\mhr_slot_3.sav", ".\\MainSave\\main_slot_3.sav");
         }
 
-        public string GetSave()
+        public string GetSave(int slot)
         {
-            return CurrentSavePath;
+            if(slot != 0)
+            {
+                return SavePaths[slot - 1];
+            }
+            else
+            {
+                return "Main";
+            }
         }
 
         public void DeleteSave(string FileName)

@@ -17,10 +17,11 @@ namespace MHST2SaveManager
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //MVC
-            Form1 v = new Form1();
             Model m = new Model();
+            Form1 v = new Form1();
             Controller c = new Controller(v, m);
             v.SetController(c);
+            v.SetSavePath();
             c.ListSaves();
             Application.Run(v);
         }

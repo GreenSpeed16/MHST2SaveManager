@@ -13,8 +13,8 @@ namespace MHST2SaveManager
     {
         //Fields
         public bool MainLoaded { get; private set; }
-        public string WorldPath { get; private set; }
-        public string CurrentSavePath { get; private set; }
+        public string SavePath { get; private set; }
+        public Dictionary<int, string> SavePaths { get; private set; }
         public List<string> SaveList { get; private set; }
 
         //Singleton class
@@ -39,6 +39,10 @@ namespace MHST2SaveManager
                         Directory.CreateDirectory("MainSave");
                         state.MainLoaded = false;
                         state.SaveList = new List<string>();
+                        state.SavePaths = new Dictionary<int, string>();
+                        state.SavePaths.Add(1, "");
+                        state.SavePaths.Add(2, "");
+                        state.SavePaths.Add(3, "");
                     }
                 }
                 return state;
@@ -49,10 +53,10 @@ namespace MHST2SaveManager
         {
         }
 
-        public void Save(string WorldPath, string CurrentSavePath, bool MainLoaded)
+        public void Save(string SavePath, Dictionary<int, string> SavePaths, bool MainLoaded)
         {
-            this.WorldPath = WorldPath;
-            this.CurrentSavePath = CurrentSavePath;
+            this.SavePath = SavePath;
+            this.SavePaths = SavePaths;
             SaveList = Model.SaveList;
             this.MainLoaded = MainLoaded;
         }
