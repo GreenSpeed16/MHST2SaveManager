@@ -13,8 +13,8 @@ namespace MHST2SaveManager
     {
         //Fields
         public bool MainLoaded { get; private set; }
-        public string WorldPath { get; private set; }
-        public string CurrentSavePath { get; private set; }
+        public string SavePath { get; private set; }
+        public SortedDictionary<int, string> SavePaths { get; private set; }
         public List<string> SaveList { get; private set; }
 
         //Singleton class
@@ -49,10 +49,10 @@ namespace MHST2SaveManager
         {
         }
 
-        public void Save(string WorldPath, string CurrentSavePath, bool MainLoaded)
+        public void Save(string SavePath, SortedDictionary<int, string> SavePaths, bool MainLoaded)
         {
-            this.WorldPath = WorldPath;
-            this.CurrentSavePath = CurrentSavePath;
+            this.SavePath = SavePath;
+            this.SavePaths = SavePaths;
             SaveList = Model.SaveList;
             this.MainLoaded = MainLoaded;
         }
