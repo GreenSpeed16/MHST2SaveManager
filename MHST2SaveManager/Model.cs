@@ -43,13 +43,21 @@ namespace MHST2SaveManager
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    //Backup Main State
-                    File.Delete(AppDataPath + "\\MainSave\\main_slot_1.sav");
-                    File.Copy(SavePath + "\\mhr_slot_1.sav", AppDataPath + "\\MainSave\\main_slot_1.sav");
-                    File.Delete(AppDataPath + "\\MainSave\\main_slot_2.sav");
-                    File.Copy(SavePath + "\\mhr_slot_2.sav", AppDataPath + "\\MainSave\\main_slot_2.sav");
-                    File.Delete(AppDataPath + "\\MainSave\\main_slot_3.sav");
-                    File.Copy(SavePath + "\\mhr_slot_3.sav", AppDataPath + "\\MainSave\\main_slot_3.sav");
+                    try
+                    {
+                        //Backup Main State
+                        File.Delete(AppDataPath + "\\MainSave\\main_slot_1.sav");
+                        File.Copy(SavePath + "\\mhr_slot_1.sav", AppDataPath + "\\MainSave\\main_slot_1.sav");
+                        File.Delete(AppDataPath + "\\MainSave\\main_slot_2.sav");
+                        File.Copy(SavePath + "\\mhr_slot_2.sav", AppDataPath + "\\MainSave\\main_slot_2.sav");
+                        File.Delete(AppDataPath + "\\MainSave\\main_slot_3.sav");
+                        File.Copy(SavePath + "\\mhr_slot_3.sav", AppDataPath + "\\MainSave\\main_slot_3.sav");
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        MessageBox.Show("This application doesn't work for the demo version of Stories 2. Please install the full version.");
+                    }
+                    
                 }
                 
             }
