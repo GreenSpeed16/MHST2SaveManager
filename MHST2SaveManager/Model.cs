@@ -20,12 +20,14 @@ namespace MHST2SaveManager
         public static bool MainLoaded { get; private set; }
         public static Dictionary<int, string> SavePaths;
         public string SavePath { get; private set; }
+        public string AppDataPath { get; private set; }
         public static ProgramState State;
 
         public Model()
         {
             binaryFormatter = new BinaryFormatter();
             State = ProgramState.State;
+            AppDataPath = State.AppDataPath;
             SavePaths = State.SavePaths;
             SavePath = State.SavePath;
             MainLoaded = State.MainLoaded;
@@ -42,19 +44,19 @@ namespace MHST2SaveManager
                 if (dialogResult == DialogResult.Yes)
                 {
                     //Backup Main State
-                    File.Delete(".\\MainSave\\main_slot_1.sav");
-                    File.Copy(SavePath + "\\mhr_slot_1.sav", ".\\MainSave\\main_slot_1.sav");
-                    File.Delete(".\\MainSave\\main_slot_2.sav");
-                    File.Copy(SavePath + "\\mhr_slot_2.sav", ".\\MainSave\\main_slot_2.sav");
-                    File.Delete(".\\MainSave\\main_slot_3.sav");
-                    File.Copy(SavePath + "\\mhr_slot_3.sav", ".\\MainSave\\main_slot_3.sav");
+                    File.Delete(AppDataPath + "\\MainSave\\main_slot_1.sav");
+                    File.Copy(SavePath + "\\mhr_slot_1.sav", AppDataPath + "\\MainSave\\main_slot_1.sav");
+                    File.Delete(AppDataPath + "\\MainSave\\main_slot_2.sav");
+                    File.Copy(SavePath + "\\mhr_slot_2.sav", AppDataPath + "\\MainSave\\main_slot_2.sav");
+                    File.Delete(AppDataPath + "\\MainSave\\main_slot_3.sav");
+                    File.Copy(SavePath + "\\mhr_slot_3.sav", AppDataPath + "\\MainSave\\main_slot_3.sav");
                 }
                 
             }
 
             SavePaths[slot] = FileName;
             File.Delete(SavePath + "\\mhr_slot_" + slot + ".sav");
-            File.Copy(".\\Saves\\" + FileName + ".sav", SavePath + "\\mhr_slot_" + slot + ".sav");
+            File.Copy(AppDataPath + "\\Saves\\" + FileName + ".sav", SavePath + "\\mhr_slot_" + slot + ".sav");
             MainLoaded = false;
         }
 
@@ -63,7 +65,7 @@ namespace MHST2SaveManager
             //Pass data to CurrentState
             State.Save(SavePath, SavePaths, MainLoaded);
             //Save to file
-            using (Stream output = File.Create("program.state"))
+            using (Stream output = File.Create(AppDataPath + "\\program.state"))
             {
                 binaryFormatter.Serialize(output, State);
             }
@@ -74,7 +76,7 @@ namespace MHST2SaveManager
             //Check for existing save with name
             if (!SaveList.Contains(FilePath))
             {
-                File.Copy(SavePath + "\\mhr_slot_" + slot + ".sav", ".\\Saves\\" + FilePath);
+                File.Copy(SavePath + "\\mhr_slot_" + slot + ".sav", AppDataPath + "\\Saves\\" + FilePath);
                 SavePaths[slot] = FilePath.Replace(".sav", "");
                 MainLoaded = false;
                 SaveList.Add(FilePath.Replace(".sav", ""));
@@ -85,8 +87,8 @@ namespace MHST2SaveManager
                     MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
-                    File.Delete(".\\Saves\\" + FilePath);
-                    File.Copy(SavePath + "\\mhr_slot_" + slot + ".sav", ".\\Saves\\" + FilePath);
+                    File.Delete(AppDataPath + "\\Saves\\" + FilePath);
+                    File.Copy(SavePath + "\\mhr_slot_" + slot + ".sav", AppDataPath + "\\Saves\\" + FilePath);
                     SavePaths[slot] = FilePath.Replace(".sav", "");
                     MainLoaded = false;
                 }
@@ -99,8 +101,8 @@ namespace MHST2SaveManager
             SaveList.Remove(oldPath);
             SaveList.Add(newPath);
 
-            newPath = ".\\Saves\\" + newPath;
-            oldPath = ".\\Saves\\" + oldPath;
+            newPath = AppDataPath + "\\Saves\\" + newPath;
+            oldPath = AppDataPath + "\\Saves\\" + oldPath;
             File.Copy(oldPath, newPath);
             File.Delete(oldPath);
         }
@@ -110,13 +112,13 @@ namespace MHST2SaveManager
             if (!MainLoaded)
             {
                 File.Delete(SavePath + "\\mhr_slot_1.sav");
-                File.Copy(".\\MainSave\\main_slot_1.sav", SavePath + "\\mhr_slot_1.sav");
+                File.Copy(AppDataPath + "\\MainSave\\main_slot_1.sav", SavePath + "\\mhr_slot_1.sav");
 
                 File.Delete(SavePath + "\\mhr_slot_2.sav");
-                File.Copy(".\\MainSave\\main_slot_2.sav", SavePath + "\\mhr_slot_2.sav");
+                File.Copy(AppDataPath + "\\MainSave\\main_slot_2.sav", SavePath + "\\mhr_slot_2.sav");
 
                 File.Delete(SavePath + "\\mhr_slot_3.sav");
-                File.Copy(".\\MainSave\\main_slot_3.sav", SavePath + "\\mhr_slot_3.sav");
+                File.Copy(AppDataPath + "\\MainSave\\main_slot_3.sav", SavePath + "\\mhr_slot_3.sav");
                 MainLoaded = true;
                 SavePaths[1] = "Main";
                 SavePaths[2] = "Main";
@@ -156,7 +158,7 @@ namespace MHST2SaveManager
 
         public void SetMain()
         {
-            if (File.Exists(".\\MainSave\\MainData"))
+            if (File.Exists(AppDataPath + "\\MainSave\\MainData"))
             {
                 string confirmation = Interaction.InputBox("You are about to overwrite your main save file. Type \"Confirm\" to continue.");
 
@@ -167,14 +169,14 @@ namespace MHST2SaveManager
                 }
             }
 
-            File.Delete(".\\MainSave\\main_slot_1.sav");
-            File.Copy(SavePath + "\\mhr_slot_1.sav", ".\\MainSave\\main_slot_1.sav");
+            File.Delete(AppDataPath + "\\MainSave\\main_slot_1.sav");
+            File.Copy(SavePath + "\\mhr_slot_1.sav", AppDataPath + "\\MainSave\\main_slot_1.sav");
 
-            File.Delete(".\\MainSave\\main_slot_2.sav");
-            File.Copy(SavePath + "\\mhr_slot_2.sav", ".\\MainSave\\main_slot_2.sav");
+            File.Delete(AppDataPath + "\\MainSave\\main_slot_2.sav");
+            File.Copy(SavePath + "\\mhr_slot_2.sav", AppDataPath + "\\MainSave\\main_slot_2.sav");
 
-            File.Delete(".\\MainSave\\main_slot_3.sav");
-            File.Copy(SavePath + "\\mhr_slot_3.sav", ".\\MainSave\\main_slot_3.sav");
+            File.Delete(AppDataPath + "\\MainSave\\main_slot_3.sav");
+            File.Copy(SavePath + "\\mhr_slot_3.sav", AppDataPath + "\\MainSave\\main_slot_3.sav");
         }
 
         public string GetSave(int slot)
@@ -194,7 +196,7 @@ namespace MHST2SaveManager
             DialogResult dialogResult = MessageBox.Show("You are about to delete " + FileName + ". Continue?", "Confirm Deletion", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                File.Delete(".\\Saves\\" + FileName);
+                File.Delete(AppDataPath + "\\Saves\\" + FileName);
                 SaveList.Remove(FileName);
             }
 
