@@ -49,6 +49,7 @@ namespace MHST2SaveManager
             this.slot2Button = new System.Windows.Forms.Button();
             this.topBar = new System.Windows.Forms.Panel();
             this.closeButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -269,12 +270,22 @@ namespace MHST2SaveManager
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(305, 194);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 25;
+            this.label2.Text = "label2";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(698, 417);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.topBar);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox2);
@@ -290,6 +301,7 @@ namespace MHST2SaveManager
             this.panel1.PerformLayout();
             this.topBar.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -314,6 +326,7 @@ namespace MHST2SaveManager
         private System.Windows.Forms.Button slot3Button;
         private System.Windows.Forms.Panel topBar;
         private System.Windows.Forms.Button closeButton;
+        private System.Windows.Forms.Label label2;
     }
 }
 
