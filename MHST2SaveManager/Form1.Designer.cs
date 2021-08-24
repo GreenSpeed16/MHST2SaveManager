@@ -43,7 +43,7 @@ namespace MHST2SaveManager
             this.RenameButton = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.slotLabel = new System.Windows.Forms.Label();
             this.slot1Button = new System.Windows.Forms.Button();
             this.slot3Button = new System.Windows.Forms.Button();
             this.slot2Button = new System.Windows.Forms.Button();
@@ -182,7 +182,7 @@ namespace MHST2SaveManager
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.slotLabel);
             this.panel1.Controls.Add(this.slot1Button);
             this.panel1.Controls.Add(this.slot3Button);
             this.panel1.Controls.Add(this.slot2Button);
@@ -191,16 +191,16 @@ namespace MHST2SaveManager
             this.panel1.Size = new System.Drawing.Size(131, 385);
             this.panel1.TabIndex = 23;
             // 
-            // label1
+            // slotLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(25, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 20);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Using Slot";
+            this.slotLabel.AutoSize = true;
+            this.slotLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.slotLabel.ForeColor = System.Drawing.Color.White;
+            this.slotLabel.Location = new System.Drawing.Point(25, 23);
+            this.slotLabel.Name = "slotLabel";
+            this.slotLabel.Size = new System.Drawing.Size(82, 20);
+            this.slotLabel.TabIndex = 4;
+            this.slotLabel.Text = "Using Slot";
             // 
             // slot1Button
             // 
@@ -309,7 +309,7 @@ namespace MHST2SaveManager
         private System.Windows.Forms.Button downButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button slot2Button;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label slotLabel;
         private System.Windows.Forms.Button slot1Button;
         private System.Windows.Forms.Button slot3Button;
         private System.Windows.Forms.Panel topBar;
