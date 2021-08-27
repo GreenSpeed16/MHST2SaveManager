@@ -14,6 +14,7 @@ namespace MHST2SaveManager
         //Fields
         public bool MainLoaded { get; private set; }
         public string SavePath { get; private set; }
+        public string AppDataPath { get; private set; }
         public Dictionary<int, string> SavePaths { get; private set; }
         public List<string> SaveList { get; private set; }
 
@@ -27,16 +28,21 @@ namespace MHST2SaveManager
                 {
                     try
                     {
-                        using (Stream input = File.OpenRead("program.state"))
+                        using (Stream input = File.OpenRead(Environment.GetEnvironmentVariable("LocalAppData") + "\\MHST2SaveManager\\program.state"))
                         {
                             state = (ProgramState)Model.binaryFormatter.Deserialize(input); //Load existing state if exists
                         }
                     }
-                    catch (FileNotFoundException)
+                    catch (DirectoryNotFoundException)
                     {
                         state = new ProgramState();
-                        Directory.CreateDirectory("Saves");
-                        Directory.CreateDirectory("MainSave");
+                        //Create file information
+                        state.AppDataPath = Environment.GetEnvironmentVariable("LocalAppData") + "\\MHST2SaveManager";
+                        Directory.CreateDirectory(state.AppDataPath);
+
+                        //Save Folder
+                        Directory.CreateDirectory(state.AppDataPath + "\\Saves");
+                        Directory.CreateDirectory(state.AppDataPath + "\\MainSave");
                         state.MainLoaded = false;
                         state.SaveList = new List<string>();
                         state.SavePaths = new Dictionary<int, string>();

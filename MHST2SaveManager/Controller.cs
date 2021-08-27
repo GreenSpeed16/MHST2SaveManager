@@ -20,7 +20,7 @@ namespace MHST2SaveManager
 
             __View.MainLoaded(Model.MainLoaded);
 
-            if (__Model.SavePath == null)
+            if (Model.SavePath == null)
             {
                 __View.EnableButtons(false);
             }
@@ -36,7 +36,7 @@ namespace MHST2SaveManager
 
         public bool SetSavePath()
         {
-            if(__Model.SavePath == null)
+            if(Model.SavePath == null)
             {
                 return __Model.SetSaveFolder();
             }
