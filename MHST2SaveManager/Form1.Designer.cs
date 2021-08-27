@@ -49,6 +49,7 @@ namespace MHST2SaveManager
             this.slot2Button = new System.Windows.Forms.Button();
             this.topBar = new System.Windows.Forms.Panel();
             this.closeButton = new System.Windows.Forms.Button();
+            this.updateFolder = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -269,12 +270,23 @@ namespace MHST2SaveManager
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
+            // updateFolder
+            // 
+            this.updateFolder.Location = new System.Drawing.Point(541, 349);
+            this.updateFolder.Name = "updateFolder";
+            this.updateFolder.Size = new System.Drawing.Size(126, 23);
+            this.updateFolder.TabIndex = 25;
+            this.updateFolder.Text = "Update Save Folder";
+            this.updateFolder.UseVisualStyleBackColor = true;
+            this.updateFolder.Click += new System.EventHandler(this.updateFolder_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(698, 417);
+            this.Controls.Add(this.updateFolder);
             this.Controls.Add(this.topBar);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox2);
@@ -314,6 +326,7 @@ namespace MHST2SaveManager
         private System.Windows.Forms.Button slot3Button;
         private System.Windows.Forms.Panel topBar;
         private System.Windows.Forms.Button closeButton;
+        private System.Windows.Forms.Button updateFolder;
     }
 }
 

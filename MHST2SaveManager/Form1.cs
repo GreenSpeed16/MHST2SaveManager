@@ -310,5 +310,11 @@ namespace MHST2SaveManager
 
             EnableSaveButtons();
         }
+
+        private void updateFolder_Click(object sender, EventArgs e)
+        {
+            string SavePath = Interaction.InputBox("Please type the Stories 2 Savedata path here: \n (Steam\\userdata\\<9-digit number>\\1277400\\remote)");
+            Model.SavePath = SavePath;
+        }
     }
 }

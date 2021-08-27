@@ -19,7 +19,7 @@ namespace MHST2SaveManager
         public static List<string> SaveList { get; private set; }
         public static bool MainLoaded { get; private set; }
         public static Dictionary<int, string> SavePaths;
-        public string SavePath { get; private set; }
+        public static string SavePath { get; set; }
         public string AppDataPath { get; private set; }
         public static ProgramState State;
 
